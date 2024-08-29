@@ -13,14 +13,9 @@ from pybricks.parameters import Port
 # Create your objects here.
 ev3 = EV3Brick()
 
-#Motors
+#Motor to port B
 motorA = Motor(Port.A)
 motorB = Motor(Port.B)
-
-#Sensor
-sensorA = Motor(Port.1)
-sensorB = Motor(Port.2)
-
 
 # Write your program here.
 #Play beep sound

@@ -13,14 +13,9 @@ from pybricks.parameters import Port
 # Create your objects here.
 ev3 = EV3Brick()
 
-#Motors
+#Motor to port B
 motorA = Motor(Port.A)
 motorB = Motor(Port.B)
-
-#Sensor
-sensorA = Motor(Port.1)
-sensorB = Motor(Port.2)
-
 
 # Write your program here.
 #Play beep sound
@@ -32,8 +27,10 @@ motorA.run_angle(speed=-600, rotation_angle=target_angle, wait=True)
 #Play beep sound
 ev3.speaker.beep() 
 
+
+
 # #going straight for a certain time = 22 cm
-for i in range(7):
+for i in range(8):
     motorA.run_time(speed=-600, time=1000, then=Stop.HOLD, wait=False)
     motorB.run_time(speed=-600, time=1000, then=Stop.HOLD, wait=True)
     # motorA.stop()
@@ -43,9 +40,9 @@ for i in range(7):
 
 # Play another beep sound.
 ev3.speaker.beep(1000, 500)
- 
-target_angle = 600 #90 degrees
-motorB.run_angle(speed=-300, rotation_angle=target_angle, wait=True)
+
+target_angle = 800 #90 degrees
+motorA.run_angle(speed=-300, rotation_angle=target_angle, wait=True)
 
 # motorA.run_target(speed=600, target_angle=target_angle, wait=False)
 # motorB.run_target(speed=500, target_angle=target_angle, wait=False)
@@ -56,8 +53,13 @@ ev3.speaker.beep(1000, 500)
 #going straight for a certain time = 22 cm
 motorA.run_time(speed=-700, time=1000, then=Stop.HOLD, wait=False)
 motorB.run_time(speed=-700, time=1000, then=Stop.HOLD, wait=True)
+#go a second time
+motorA.run_time(speed=-700, time=1000, then=Stop.HOLD, wait=False)
+motorB.run_time(speed=-700, time=1000, then=Stop.HOLD, wait=True)
 
 ev3.speaker.beep(1000, 500)
 
-# target_angle = 20 #90 degrees
-# motorA.run_angle(speed=-300, rotation_angle=target_angle, wait=True)
+target_angle = 800 #90 degrees
+motorA.run_angle(speed=-300, rotation_angle=target_angle, wait=True)
+target_angle = 400  
+motorA.run_angle(speed=-300, rotation_angle=target_angle, wait=True)
