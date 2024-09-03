@@ -60,14 +60,16 @@ class PIDController:
             return None
 
 
-"""
+
 
 # Example usage
+"""
+
 if __name__ == "__main__":
     import time
 
     # Create a PID controller with kp=1.0, ki=0.1, kd=0.05
-    pid = PIDController(kp=0.2, ki=0.5, kd=0.1, setpoint=100)
+    pid = PIDController(kp=0.4, ki=0.1, kd=0.01, setpoint=1000)
 
     # Simulate a process variable starting at 0
     process_variable = 0
