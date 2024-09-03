@@ -31,7 +31,7 @@ pid = PIDController(kp=0.4, ki=0.1, kd=0.01, setpoint=1000)
 
 speed_variable = 0
 
-driver = DriveBase(left_motor=motorA, left_motor=motorB, wheel_diameter=40, axle_track=130)
+driver = DriveBase(left_motor=motorA, right_motor=motorB, wheel_diameter=40, axle_track=130)
 
 
  for i in range(100):
@@ -41,8 +41,8 @@ driver = DriveBase(left_motor=motorA, left_motor=motorB, wheel_diameter=40, axle
         if control_signal is not None:
             # Apply control signal to the process variable (simple simulation)
             speed_variable += control_signal * 0.1
-            motorA.run_time(speed=-speed_variable, time=1000, then=Stop.HOLD, wait=False)
-            motorB.run_time(speed=-speed_variable, time=1000, then=Stop.HOLD, wait=False)
-            #driver.drive(control_signal, 30)
+            #motorA.run_time(speed=-speed_variable, time=1000, then=Stop.HOLD, wait=False)
+            #motorB.run_time(speed=-speed_variable, time=1000, then=Stop.HOLD, wait=False)
+            driver.drive(control_signal, 30)
     time.sleep(0.01)
 
