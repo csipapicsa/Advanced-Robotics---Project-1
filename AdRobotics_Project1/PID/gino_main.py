@@ -21,24 +21,24 @@ ev3.speaker.beep()
 
 # Initialize motors connected to Ports A and D
 left_motor = Motor(Port.A)
-right_motor = Motor(Port.D)
+right_motor = Motor(Port.B)
 
 # Create a DriveBase object
-wheel_diameter = 56  # in millimeters
+wheel_diameter = 40  # in millimeters
 axle_track = 145  # distance between the two wheels in millimeters
 robot = DriveBase(left_motor, right_motor, wheel_diameter, axle_track)
 
 # Initialize the color sensors connected to Ports S1 and S2
-left_sensor = ColorSensor(Port.S1)
-right_sensor = ColorSensor(Port.S2)
+right_sensor = ColorSensor(Port.S1)
+left_sensor = ColorSensor(Port.S2)
 
 # Define thresholds for detecting the black line
-RIGHT_THRESHOLD = 30
-LEFT_THRESHOLD = 30
-INTERSECTION_THRESHOLD = 5
+RIGHT_THRESHOLD = 20
+LEFT_THRESHOLD = 20
+INTERSECTION_THRESHOLD = 3 # on the line
 
 # Speed and steering parameters
-DRIVE_SPEED = 70  # The base speed of the robot
+DRIVE_SPEED = -100  # The base speed of the robot
 TURN_RATE = 50   # How sharply the robot turns when correcting
 
 LEFT = -105
@@ -46,6 +46,8 @@ RIGHT = 105
 STRAIGHT = 0
 
 INSTRUCTIONS = [LEFT, RIGHT, RIGHT, LEFT, STRAIGHT] # LEFT, RIGHT, RIGHT, LEFT
+
+ev3.speaker.beep()
 
 # Main loop to follow the black line and print reflection values
 while True:
@@ -59,7 +61,8 @@ while True:
     ev3.screen.draw_text(0, 20, "Right: {}".format(right_reflection))
     # If neither sensor detects black, stop the robot
     if left_reflection >= LEFT_THRESHOLD and right_reflection >= RIGHT_THRESHOLD:
-        robot.stop()
+        None
+        #robot.stop()
     # We found an intersection
     elif left_reflection < INTERSECTION_THRESHOLD and right_reflection < INTERSECTION_THRESHOLD:
         robot.straight(90) # Drive a bit
