@@ -57,41 +57,10 @@ while True:
     left_reflection = left_sensor.reflection()
     right_reflection = right_sensor.reflection()
     # print the battery voltage
-    ev3.screen.draw_text(0, 0, "Battery Voltage: {}".format(ev3.battery.voltage()))
+    # ev3.screen.draw_text(0, 0, "Battery Voltage: {}".format(ev3.battery.voltage()))
 
     # Print the reflection values to the EV3 Brick's screen
     ev3.screen.clear()  # Clear the screen to avoid overlapping text
     ev3.screen.draw_text(0, 0, "Left: {}".format(left_reflection))
     ev3.screen.draw_text(0, 20, "Right: {}".format(right_reflection))
-    # We found an intersection
-    if left_reflection <= INTERSECTION_THRESHOLD and right_reflection <= INTERSECTION_THRESHOLD:
-        ev3.screen.clear()
-        ev3.screen.draw_text(0, 0, "Intersection")
-        # robot.straight(90) # Drive a bit
-        # instruction = INSTRUCTIONS.pop(0)
-        # ev3.screen.draw_text(0, 0, "{}".format(instruction))
-        # robot.turn(instruction) # Turn
-        robot.drive(DRIVE_SPEED, -TURN_RATE)  # Turn left
-        wait(200)
-        robot.drive(DRIVE_SPEED, 0) # Continue driving
-    # If both sensors detect black, move straight
-    elif left_reflection <= LEFT_THRESHOLD and right_reflection <= RIGHT_THRESHOLD and left_reflection >= LEFT_BLACK and right_reflection >= RIGTH_BLACK:
-        ev3.screen.clear()
-        ev3.screen.draw_text(0, 0, "Straight")
-        robot.drive(DRIVE_SPEED, 0)  # Move straight
-    # If only the left sensor detects black, turn right
-    elif left_reflection <= LEFT_BLACK:
-        ev3.screen.clear()
-        ev3.screen.draw_text(0, 0, "Left")
-        robot.drive(DRIVE_SPEED, -TURN_RATE)  # Turn left
-    # If only the right sensor detects black, turn left
-    elif right_reflection <= RIGTH_BLACK:
-        ev3.screen.clear()
-        ev3.screen.draw_text(0, 0, "Right")
-        robot.drive(DRIVE_SPEED, TURN_RATE)  # Turn right
-    else:
-        ev3.screen.clear()
-        ev3.screen.draw_text(0, 0, "None")
-        robot.drive(DRIVE_SPEED, 0)
-    # Short wait to avoid busy-waiting
-    wait(100)
+    wait(3000)
