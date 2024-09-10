@@ -1,0 +1,41 @@
+Thoughts:
+busy waiting could be shorter long is less accurate adjustments
+
+-----------------------------------
+
+Testing for line following robot using 2 sensors:
+Limitations of the current version:
+- Always turns left at intersections.
+- Does not understand right only intersections, but can follow them when the only option is to "turn" right.
+
+90% of cases where it can go right and straight it goes straight.
+100% of cases where it can only go right it goes right.
+100% of cases where it can go left it goes left.
+
+Adequate at following line, very few times strays off at T-sections and jiggles.
+
+-----------------------------------
+
+Testing line following robot using 3 sensors:
+
+It is able to turn left at any intersection correctly.
+It is able to turn right at corners and left at corners where it is the only option.
+It is unable to accurately turn right at intersection where the options are forward and right, it will always go straight.
+	this is delibarate, since it is hardcoded to go left when it detects intersections.
+
+It always chooses to go left at intersections if that is an option.
+
+*It stops moving in 5% or less of intersections, due to left/right sensor active but not middle.
+*It stops moving when all sensors leave the Black tape.
+ Both of the above was fixed, by adding the option of the car to drive in reverse in these situations, 
+	and the robot were able to recover doing this.
+
+Improved at following line compared to 2 sensors, never strays off but still jiggles.
+
+
+
+
+
+
+
+
