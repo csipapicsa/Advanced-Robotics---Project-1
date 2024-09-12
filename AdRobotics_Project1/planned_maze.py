@@ -64,6 +64,9 @@ maze = [[1, 1, 1, 1, 1, 1, 1],
         [1, 1, 1, 1, 1, 1, 1]]
 
 
+commands = ["forward", "right", "forward", "left", "left", "right"]
+
+
 # Main loop to follow the black line and print reflection values
 while True:
     # Get the reflected light intensity from both sensors
@@ -75,23 +78,11 @@ while True:
     ev3.screen.clear()  # Clear the screen to avoid overlapping text
     
 
-
-    #intersection
-    # elif (left_reflection <= LEFT_BLACK and right_reflection <= RIGTH_BLACK and middle_reflection <= MIDDLE_BLACK):
-
-
-    # If both sensors detect gray, and we are on the line, move straight
-    # if left_reflection <= LEFT_THRESHOLD and right_reflection <= RIGHT_THRESHOLD and left_reflection >= LEFT_BLACK and right_reflection >= RIGTH_BLACK and middle_reflection <= MIDDLE_BLACK:
-    #     ev3.screen.clear()
-    #     ev3.screen.draw_text(0, 0, "Straight")
-    #     robot.drive(DRIVE_SPEED, 0)  # Move straight
-    commands = ["forward", "right", "forward", "left", "left", "right"]
-
     #If corner of any kind (thereby also intersection)
     if ((left_reflection <= LEFT_BLACK and middle_reflection <= MIDDLE_BLACK) or (left_reflection <= LEFT_BLACK and middle_reflection > MIDDLE_BLACK and right_reflection > RIGTH_BLACK)) or ((right_reflection <= RIGTH_BLACK and middle_reflection <= MIDDLE_BLACK) or (right_reflection <= RIGTH_BLACK and middle_reflection > MIDDLE_BLACK and left_reflection > LEFT_BLACK)):
         ev3.screen.clear()
         ev3.screen.draw_text(0, 0, "INTERSECTION")
-        if commands.len() == 0:
+        if len(commands) == 0:
             robot.stop()
             break
         currentCommand = commands.pop(0)
