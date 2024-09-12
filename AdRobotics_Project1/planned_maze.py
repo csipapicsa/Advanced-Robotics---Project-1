@@ -26,7 +26,7 @@ right_motor = Motor(Port.B)
 
 # Create a DriveBase object
 wheel_diameter = 40  # in millimeters
-axle_track = 145  # distance between the two wheels in millimeters
+axle_track = 190 #145 # distance between the two wheels in millimeters
 robot = DriveBase(left_motor, right_motor, wheel_diameter, axle_track)
 
 # Initialize the color sensors connected to Ports S1 and S2
@@ -38,10 +38,10 @@ middle_sensor = LightSensor(Port.S4)
 # Define thresholds for detecting the black line
 RIGHT_THRESHOLD = 20
 LEFT_THRESHOLD = 20
-RIGTH_BLACK = 4
-LEFT_BLACK = 4
-MIDDLE_BLACK = 18 #we are on the line if it is 34 or under
-MIDDLE_THRESHOLD = 34
+RIGTH_BLACK = 7
+LEFT_BLACK = 9
+MIDDLE_BLACK = 28 #we are on the line if it is 34 or under
+MIDDLE_THRESHOLD = 47
 
 # Speed and steering parameters
 DRIVE_SPEED = 70 #50  # The base speed of the robot
@@ -64,6 +64,9 @@ maze = [[1, 1, 1, 1, 1, 1, 1],
         [1, 1, 1, 1, 1, 1, 1]]
 
 
+commands = ["forward", "right", "forward", "left", "left", "right"]
+
+
 # Main loop to follow the black line and print reflection values
 while True:
     # Get the reflected light intensity from both sensors
@@ -75,49 +78,80 @@ while True:
     ev3.screen.clear()  # Clear the screen to avoid overlapping text
     
 
+    #If corner of any kind (thereby also intersection)
+    if ((left_reflection <= LEFT_BLACK and middle_reflection <= MIDDLE_BLACK) or (left_reflection <= LEFT_BLACK and middle_reflection > MIDDLE_BLACK and right_reflection > RIGTH_BLACK)) or ((right_reflection <= RIGTH_BLACK and middle_reflection <= MIDDLE_BLACK) or (right_reflection <= RIGTH_BLACK and middle_reflection > MIDDLE_BLACK and left_reflection > LEFT_BLACK)):
+        ev3.screen.clear()
+        ev3.screen.draw_text(0, 0, "INTERSECTION")
+        if len(commands) == 0:
+            robot.stop()
+            break
+        currentCommand = commands.pop(0)
 
-    #intersection
-    # elif (left_reflection <= LEFT_BLACK and right_reflection <= RIGTH_BLACK and middle_reflection <= MIDDLE_BLACK):
+        if currentCommand == "right":
+            ev3.screen.clear()
+            ev3.screen.draw_text(0, 0, "Right")
+            robot.straight(35)
+            robot.turn(TURN_RATE-10)  # Turn right
+            robot.straight(25)
+        elif currentCommand == "left":
+            ev3.screen.clear()
+            ev3.screen.draw_text(0, 0, "Left")
+            robot.straight(65)
+            robot.turn(-TURN_RATE)  # Turn left
+            robot.straight(25)
+        elif currentCommand == "forward":
+            ev3.screen.clear()
+            ev3.screen.draw_text(0, 0, "Forward")
+            robot.straight(75)
+        else: 
+            ev3.screen.clear()
+            ev3.screen.draw_text(0, 0, "WHAT TO DO???")
+            robot.stop()
+    
 
-
-    # If both sensors detect gray, and we are on the line, move straight
-    # if left_reflection <= LEFT_THRESHOLD and right_reflection <= RIGHT_THRESHOLD and left_reflection >= LEFT_BLACK and right_reflection >= RIGTH_BLACK and middle_reflection <= MIDDLE_BLACK:
+    #BOTH left and right --> all sensors 
+    # if ((left_reflection <= LEFT_BLACK and middle_reflection <= MIDDLE_BLACK) or (left_reflection <= LEFT_BLACK and middle_reflection > MIDDLE_BLACK and right_reflection > RIGTH_BLACK)) and ((right_reflection <= RIGTH_BLACK and middle_reflection <= MIDDLE_BLACK) or (right_reflection <= RIGTH_BLACK and middle_reflection > MIDDLE_BLACK and left_reflection > LEFT_BLACK)):
     #     ev3.screen.clear()
-    #     ev3.screen.draw_text(0, 0, "Straight")
-    #     robot.drive(DRIVE_SPEED, 0)  # Move straight
+    #     ev3.screen.draw_text(0, 0, "INTERSECTION")
+    #     robot.straight(35)
+    #     robot.turn(TURN_RATE-10)  # Turn right
+    #     robot.straight(25)
+
+    # # If only the left sensor detects black, turn left OR left if detecting but the middle and right are not
+    # elif (left_reflection <= LEFT_BLACK and middle_reflection <= MIDDLE_BLACK) or (left_reflection <= LEFT_BLACK and middle_reflection > MIDDLE_BLACK and right_reflection > RIGTH_BLACK):
+    #     ev3.screen.clear()
+    #     ev3.screen.draw_text(0, 0, "Left")
+    #     robot.straight(65)
+    #     robot.turn(-TURN_RATE)  # Turn left
+    #     robot.straight(25)
     
-    # If only the left sensor detects black, turn left OR left if detecting but the middle and right are not
-    if (left_reflection <= LEFT_BLACK and middle_reflection <= MIDDLE_BLACK) or (left_reflection <= LEFT_BLACK and middle_reflection > MIDDLE_BLACK and right_reflection > RIGTH_BLACK):
-        ev3.screen.clear()
-        ev3.screen.draw_text(0, 0, "Left")
-        robot.drive(DRIVE_SPEED, -TURN_RATE)  # Turn left
-        wait(200)
-    
-    # If only the right sensor detects black, turn right
-    elif (right_reflection <= RIGTH_BLACK and middle_reflection <= MIDDLE_BLACK) or (right_reflection <= RIGTH_BLACK and middle_reflection > MIDDLE_BLACK and left_reflection > LEFT_BLACK):
-        ev3.screen.clear()
-        ev3.screen.draw_text(0, 0, "Right")
-        robot.drive(DRIVE_SPEED, TURN_RATE)  # Turn right
-        wait(200)
+    # # If only the right sensor detects black, turn right
+    # elif (right_reflection <= RIGTH_BLACK and middle_reflection <= MIDDLE_BLACK) or (right_reflection <= RIGTH_BLACK and middle_reflection > MIDDLE_BLACK and left_reflection > LEFT_BLACK):
+    #     ev3.screen.clear()
+    #     ev3.screen.draw_text(0, 0, "Right")
+    #     robot.straight(35)
+    #     robot.turn(TURN_RATE-10)  # Turn right
+    #     robot.straight(25)
     
     # if slightly on the black line with the middel sensor
     elif middle_reflection <= MIDDLE_THRESHOLD:
         ev3.screen.clear()
         ev3.screen.draw_text(0, 0, "ALMOST Straight on the line")
         adjustValue = 27 - middle_reflection #it is 27, because it is the median value of the middle sensor reading all balck and all grey
-        robot.drive(DRIVE_SPEED, adjustValue) #multiplly with 2 in order to turn enough 
+        robot.drive(DRIVE_SPEED, adjustValue/2) #multiplly with 2 in order to turn enough 
 
     #If on the black line go straight
-    elif middle_reflection <= MIDDLE_BLACK: 
-        ev3.screen.clear()
-        ev3.screen.draw_text(0, 0, "Straight on the line")
-        robot.drive(DRIVE_SPEED, 0)
+    #probaly never used as the slightly on the line is more powerful
+    # elif middle_reflection <= MIDDLE_BLACK: 
+    #     ev3.screen.clear()
+    #     ev3.screen.draw_text(0, 0, "Straight on the line")
+    #     robot.drive(DRIVE_SPEED, 0)
 
-    # Not on the line.. go backwards with a slight angle of 5 degrees
+    # Not on the line.. turn slight angle of 5 degrees to left
     else:
         ev3.screen.clear()
-        ev3.screen.draw_text(0, 0, "No line, go backwards")
-        robot.drive(-DRIVE_SPEED, 5)
+        ev3.screen.draw_text(0, 0, "No line, go left 5")
+        robot.turn(-5)
         wait(200)
     # Short wait to avoid busy-waiting
     wait(100)
