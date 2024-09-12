@@ -64,7 +64,8 @@ maze = [[1, 1, 1, 1, 1, 1, 1],
         [1, 1, 1, 1, 1, 1, 1]]
 
 
-commands = ["forward", "right", "forward", "left", "left", "right"]
+# commands = ["forward", "right", "backwards"]
+commands = ["forward", "backwards", "left", "backwards", "right", "backwards"]
 
 
 # Main loop to follow the black line and print reflection values
@@ -103,10 +104,19 @@ while True:
             ev3.screen.clear()
             ev3.screen.draw_text(0, 0, "Forward")
             robot.straight(75)
+        elif currentCommand == "backwards":
+            ev3.screen.clear()
+            ev3.screen.draw_text(0, 0, "Backwards")
+            robot.straight(-100)
+            robot.turn(-180) #turn left all the around
+            robot.straight(-50)
+            ev3.speaker.beep()
         else: 
             ev3.screen.clear()
             ev3.screen.draw_text(0, 0, "WHAT TO DO???")
             robot.stop()
+            ev3.speaker.beep()
+            ev3.speaker.beep()
     
 
     #BOTH left and right --> all sensors 
