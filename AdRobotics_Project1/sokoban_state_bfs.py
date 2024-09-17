@@ -13,7 +13,7 @@ robot_pos = (1, 1) # (y, x)
 robot_direction = "RIGHT" # can be "UP", "DOWN", "LEFT", "RIGHT"
 
 can_pos = (3, 2) # can be multiple cans
-goal_pos = (4, 2) # can be multiple goals
+goal_pos = (4, 4) # can be multiple goals
 
 def print_maze(maze, robot_pos, can_pos, goal_pos): # print game state, for testing
         for y in range(len(maze)):
@@ -309,8 +309,7 @@ else:
         moves = []
         for node in path:
                 if node.parent != None:
-                        if node.robot_pos[0] - node.parent.robot_pos[0] == 1: #robot moved down
-                                #moves.append("DOWN")
+                        if node.robot_pos[0] - node.parent.robot_pos[0] == 1: #robot moved down in y,x
                                 if node.parent.robot_direction == "UP":
                                         moves.append("BACKWARD")
                                 elif node.parent.robot_direction == "DOWN":
@@ -319,8 +318,7 @@ else:
                                         moves.append("LEFT")
                                 elif node.parent.robot_direction == "RIGHT":
                                         moves.append("RIGHT")
-                        elif node.robot_pos[0] - node.parent.robot_pos[0] == -1: #robot moved up
-                                #moves.append("UP")
+                        elif node.robot_pos[0] - node.parent.robot_pos[0] == -1: #robot moved up in y,x
                                 if node.parent.robot_direction == "UP":
                                         moves.append("FORWARD")
                                 elif node.parent.robot_direction == "DOWN":
@@ -329,8 +327,7 @@ else:
                                         moves.append("RIGHT")
                                 elif node.parent.robot_direction == "RIGHT":
                                         moves.append("LEFT")
-                        elif node.robot_pos[1] - node.parent.robot_pos[1] == 1: #robot moved right
-                                #moves.append("RIGHT")
+                        elif node.robot_pos[1] - node.parent.robot_pos[1] == 1: #robot moved right in y,x
                                 if node.parent.robot_direction == "UP":
                                         moves.append("RIGHT")
                                 elif node.parent.robot_direction == "DOWN":
@@ -339,8 +336,7 @@ else:
                                         moves.append("BACKWARD")
                                 elif node.parent.robot_direction == "RIGHT":
                                         moves.append("FORWARD")
-                        elif node.robot_pos[1] - node.parent.robot_pos[1] == -1: 
-                                #moves.append("LEFT")
+                        elif node.robot_pos[1] - node.parent.robot_pos[1] == -1: #robot moved left in y,x
                                 if node.parent.robot_direction == "UP": 
                                         moves.append("LEFT") 
                                 elif node.parent.robot_direction == "DOWN":
@@ -349,4 +345,5 @@ else:
                                         moves.append("FORWARD")
                                 elif node.parent.robot_direction == "RIGHT":
                                         moves.append("BACKWARD")
+        moves.append("FORWARD")
         print(moves)
