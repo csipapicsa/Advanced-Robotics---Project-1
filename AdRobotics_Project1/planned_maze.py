@@ -65,8 +65,8 @@ maze = [[1, 1, 1, 1, 1, 1, 1],
 
 
 # commands = ["forward", "right", "backwards"]
-commands = ["forward", "backwards", "left", "backwards", "right", "backwards"]
-
+commands = ['FORWARD', 'FORWARD', 'RIGHT', 'FORWARD', 'RIGHT', 'FORWARD', 'RIGHT', 'FORWARD', 'BACKWARD', 'LEFT', 'FORWARD', 'BACKWARD', 'RIGHT', 'RIGHT', 'RIGHT', 'FORWARD']
+#["FORWARD", "RIGHT", "FORWARD","FORWARD", "BACKWARD", "LEFT", "LEFT", "LEFT", "FORWARD", "FORWARD"]
 
 # Main loop to follow the black line and print reflection values
 while True:
@@ -88,23 +88,23 @@ while True:
             break
         currentCommand = commands.pop(0)
 
-        if currentCommand == "right":
+        if currentCommand == "RIGHT":
             ev3.screen.clear()
             ev3.screen.draw_text(0, 0, "Right")
             robot.straight(35)
             robot.turn(TURN_RATE-10)  # Turn right
             robot.straight(25)
-        elif currentCommand == "left":
+        elif currentCommand == "LEFT":
             ev3.screen.clear()
             ev3.screen.draw_text(0, 0, "Left")
             robot.straight(65)
             robot.turn(-TURN_RATE)  # Turn left
             robot.straight(25)
-        elif currentCommand == "forward":
+        elif currentCommand == "FORWARD":
             ev3.screen.clear()
             ev3.screen.draw_text(0, 0, "Forward")
             robot.straight(75)
-        elif currentCommand == "backwards":
+        elif currentCommand == "BACKWARD":
             ev3.screen.clear()
             ev3.screen.draw_text(0, 0, "Backwards")
             robot.straight(-100)
