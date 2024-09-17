@@ -307,15 +307,46 @@ else:
                 print()
         
         moves = []
-        for i in range(1, len(path)):
-                if path[i].robot_pos == path[i-1].robot_pos:
-                        moves.append("STAY")
-                elif path[i].robot_pos[0] == path[i-1].robot_pos[0] + 1:
-                        moves.append("FORWARD")
-                elif path[i].robot_pos[0] == path[i-1].robot_pos[0] - 1:
-                        moves.append("BACKWARD")
-                elif path[i].robot_pos[1] == path[i-1].robot_pos[1] + 1:
-                        moves.append("RIGHT")
-                elif path[i].robot_pos[1] == path[i-1].robot_pos[1] - 1:
-                        moves.append("LEFT")
+        for node in path:
+                if node.parent != None:
+                        if node.robot_pos[0] - node.parent.robot_pos[0] == 1: #robot moved down
+                                #moves.append("DOWN")
+                                if node.parent.robot_direction == "UP":
+                                        moves.append("BACKWARD")
+                                elif node.parent.robot_direction == "DOWN":
+                                        moves.append("FORWARD")
+                                elif node.parent.robot_direction == "LEFT":
+                                        moves.append("LEFT")
+                                elif node.parent.robot_direction == "RIGHT":
+                                        moves.append("RIGHT")
+                        elif node.robot_pos[0] - node.parent.robot_pos[0] == -1: #robot moved up
+                                #moves.append("UP")
+                                if node.parent.robot_direction == "UP":
+                                        moves.append("FORWARD")
+                                elif node.parent.robot_direction == "DOWN":
+                                        moves.append("BACKWARD")
+                                elif node.parent.robot_direction == "LEFT":
+                                        moves.append("RIGHT")
+                                elif node.parent.robot_direction == "RIGHT":
+                                        moves.append("LEFT")
+                        elif node.robot_pos[1] - node.parent.robot_pos[1] == 1: #robot moved right
+                                #moves.append("RIGHT")
+                                if node.parent.robot_direction == "UP":
+                                        moves.append("RIGHT")
+                                elif node.parent.robot_direction == "DOWN":
+                                        moves.append("LEFT")
+                                elif node.parent.robot_direction == "LEFT":
+                                        moves.append("BACKWARD")
+                                elif node.parent.robot_direction == "RIGHT":
+                                        moves.append("FORWARD")
+                        elif node.robot_pos[1] - node.parent.robot_pos[1] == -1: 
+                                #moves.append("LEFT")
+                                if node.parent.robot_direction == "UP": 
+                                        moves.append("LEFT") 
+                                elif node.parent.robot_direction == "DOWN":
+                                        moves.append("RIGHT")
+                                elif node.parent.robot_direction == "LEFT":
+                                        moves.append("FORWARD")
+                                elif node.parent.robot_direction == "RIGHT":
+                                        moves.append("BACKWARD")
         print(moves)
