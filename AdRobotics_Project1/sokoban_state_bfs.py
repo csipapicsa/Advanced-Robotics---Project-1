@@ -55,49 +55,41 @@ def move_forward(maze, game_node):
         if game_node.robot_direction == "UP":
                 if maze[game_node.robot_pos[0] - 1][game_node.robot_pos[1]] == 1:
                         new_robot_pos = (game_node.robot_pos[0] - 1, game_node.robot_pos[1])
-                        new_robot_direction = "UP"
-                        if new_robot_pos == game_node.can_pos:
+                        if game_node.robot_pos == game_node.can_pos:
                                 new_can_pos = (game_node.can_pos[0] - 1, game_node.can_pos[1])
-                                if maze[new_can_pos[0]][new_can_pos[1]] == 0:
-                                        return None
                         else:
                                 new_can_pos = game_node.can_pos
+                        new_robot_direction = "UP"
                 else:
                         return None
         elif game_node.robot_direction == "DOWN":
                 if maze[game_node.robot_pos[0] + 1][game_node.robot_pos[1]] == 1:
                         new_robot_pos = (game_node.robot_pos[0] + 1, game_node.robot_pos[1])
-                        new_robot_direction = "DOWN"
-                        if new_robot_pos == game_node.can_pos:
+                        if game_node.robot_pos == game_node.can_pos:
                                 new_can_pos = (game_node.can_pos[0] + 1, game_node.can_pos[1])
-                                if maze[new_can_pos[0]][new_can_pos[1]] == 0:
-                                        return None
                         else:
                                 new_can_pos = game_node.can_pos
+                        new_robot_direction = "DOWN"
                 else:
                         return None
         elif game_node.robot_direction == "LEFT":
                 if maze[game_node.robot_pos[0]][game_node.robot_pos[1] - 1] == 1:
                         new_robot_pos = (game_node.robot_pos[0], game_node.robot_pos[1] - 1)
-                        new_robot_direction = "LEFT"
-                        if new_robot_pos == game_node.can_pos:
+                        if game_node.robot_pos == game_node.can_pos:
                                 new_can_pos = (game_node.can_pos[0], game_node.can_pos[1] - 1)
-                                if maze[new_can_pos[0]][new_can_pos[1]] == 0:
-                                        return None
                         else:
                                 new_can_pos = game_node.can_pos
+                        new_robot_direction = "LEFT"
                 else:
                         return None
         elif game_node.robot_direction == "RIGHT":
                 if maze[game_node.robot_pos[0]][game_node.robot_pos[1] + 1] == 1:
                         new_robot_pos = (game_node.robot_pos[0], game_node.robot_pos[1] + 1)
-                        new_robot_direction = "RIGHT"
-                        if new_robot_pos == game_node.can_pos:
+                        if game_node.robot_pos == game_node.can_pos:
                                 new_can_pos = (game_node.can_pos[0], game_node.can_pos[1] + 1)
-                                if maze[new_can_pos[0]][new_can_pos[1]] == 0:
-                                        return None
                         else:
                                 new_can_pos = game_node.can_pos
+                        new_robot_direction = "RIGHT"
                 else:
                         return None
         new_node = Node(new_robot_pos, new_robot_direction, new_can_pos)
@@ -111,11 +103,7 @@ def move_backward(maze, game_node):
                         new_robot_pos = (game_node.robot_pos[0] + 1, game_node.robot_pos[1])
                         new_robot_direction = "DOWN"
                         if new_robot_pos == game_node.can_pos:
-                                new_can_pos = (game_node.can_pos[0] + 1, game_node.can_pos[1])
-                                if maze[new_can_pos[0]][new_can_pos[1]] == 0:
-                                        return None
-                        else:
-                                new_can_pos = game_node.can_pos
+                                return None
                 else:
                         return None
         elif game_node.robot_direction == "DOWN":
@@ -123,11 +111,7 @@ def move_backward(maze, game_node):
                         new_robot_pos = (game_node.robot_pos[0] - 1, game_node.robot_pos[1])
                         new_robot_direction = "UP"
                         if new_robot_pos == game_node.can_pos:
-                                new_can_pos = (game_node.can_pos[0] - 1, game_node.can_pos[1])
-                                if maze[new_can_pos[0]][new_can_pos[1]] == 0:
-                                        return None
-                        else: 
-                                new_can_pos = game_node.can_pos
+                                return None
                 else:
                         return None
         elif game_node.robot_direction == "LEFT":
@@ -135,11 +119,7 @@ def move_backward(maze, game_node):
                         new_robot_pos = (game_node.robot_pos[0], game_node.robot_pos[1] + 1)
                         new_robot_direction = "RIGHT"
                         if new_robot_pos == game_node.can_pos:
-                                new_can_pos = (game_node.can_pos[0], game_node.can_pos[1] + 1)
-                                if maze[new_can_pos[0]][new_can_pos[1]] == 0:
-                                        return None
-                        else:  
-                                new_can_pos = game_node.can_pos
+                                return None
                 else:
                         return None
         elif game_node.robot_direction == "RIGHT":
@@ -147,68 +127,48 @@ def move_backward(maze, game_node):
                         new_robot_pos = (game_node.robot_pos[0], game_node.robot_pos[1] - 1)
                         new_robot_direction = "LEFT"
                         if new_robot_pos == game_node.can_pos:
-                                new_can_pos = (game_node.can_pos[0], game_node.can_pos[1] - 1)
-                                if maze[new_can_pos[0]][new_can_pos[1]] == 0:
-                                        return None
-                        else:
-                                new_can_pos = game_node.can_pos
+                                return None
                 else:
                         return None
-        new_node = Node(new_robot_pos, new_robot_direction, new_can_pos)
+        new_node = Node(new_robot_pos, new_robot_direction, game_node.can_pos)
         new_node.parent = game_node
         return new_node
     
-def move_left(maze, game_node):
+def move_left(maze, game_node): 
         #check if there is a wall to the left of the robot
         if game_node.robot_direction == "UP":
                 if maze[game_node.robot_pos[0]][game_node.robot_pos[1] - 1] == 1:
                         new_robot_pos = (game_node.robot_pos[0], game_node.robot_pos[1] - 1)
                         new_robot_direction = "LEFT"
-                        if new_robot_pos == game_node.can_pos:
-                                new_can_pos = (game_node.can_pos[0], game_node.can_pos[1] - 1)
-                                if maze[new_can_pos[0]][new_can_pos[1]] == 0:
-                                        return None
-                        else:
-                                new_can_pos = game_node.can_pos
+                        if game_node.robot_pos == game_node.can_pos:
+                                return None
                 else:
                         return None
         elif game_node.robot_direction == "DOWN":
                 if maze[game_node.robot_pos[0]][game_node.robot_pos[1] + 1] == 1:
                         new_robot_pos = (game_node.robot_pos[0], game_node.robot_pos[1] + 1)
                         new_robot_direction = "RIGHT"
-                        if new_robot_pos == game_node.can_pos:
-                                new_can_pos = (game_node.can_pos[0], game_node.can_pos[1] + 1)
-                                if maze[new_can_pos[0]][new_can_pos[1]] == 0:
-                                        return None
-                        else:
-                                new_can_pos = game_node.can_pos
+                        if game_node.robot_pos == game_node.can_pos:
+                                return None
                 else:
                         return None
         elif game_node.robot_direction == "LEFT":
                 if maze[game_node.robot_pos[0] + 1][game_node.robot_pos[1]] == 1:
                         new_robot_pos = (game_node.robot_pos[0] + 1, game_node.robot_pos[1])
                         new_robot_direction = "DOWN"
-                        if new_robot_pos == game_node.can_pos:
-                                new_can_pos = (game_node.can_pos[0] + 1, game_node.can_pos[1])
-                                if maze[new_can_pos[0]][new_can_pos[1]] == 0:
-                                        return None
-                        else:
-                                new_can_pos = game_node.can_pos
+                        if game_node.robot_pos == game_node.can_pos:
+                                return None
                 else:
                         return None
         elif game_node.robot_direction == "RIGHT":
                 if maze[game_node.robot_pos[0] - 1][game_node.robot_pos[1]] == 1:
                         new_robot_pos = (game_node.robot_pos[0] - 1, game_node.robot_pos[1])
                         new_robot_direction = "UP"
-                        if new_robot_pos == game_node.can_pos:
-                                new_can_pos = (game_node.can_pos[0] - 1, game_node.can_pos[1])
-                                if maze[new_can_pos[0]][new_can_pos[1]] == 0:
-                                        return None
-                        else:
-                                new_can_pos = game_node.can_pos
+                        if game_node.robot_pos == game_node.can_pos:
+                                return None
                 else:
                         return None
-        new_node = Node(new_robot_pos, new_robot_direction, new_can_pos)
+        new_node = Node(new_robot_pos, new_robot_direction, game_node.can_pos)
         new_node.parent = game_node
         return new_node
     
@@ -218,51 +178,35 @@ def move_right(maze, game_node):
                 if maze[game_node.robot_pos[0]][game_node.robot_pos[1] + 1] == 1:
                         new_robot_pos = (game_node.robot_pos[0], game_node.robot_pos[1] + 1)
                         new_robot_direction = "RIGHT"
-                        if new_robot_pos == game_node.can_pos:
-                                new_can_pos = (game_node.can_pos[0], game_node.can_pos[1] + 1)
-                                if maze[new_can_pos[0]][new_can_pos[1]] == 0:
-                                        return None
-                        else:
-                                new_can_pos = game_node.can_pos
+                        if game_node.robot_pos == game_node.can_pos:
+                                return None
                 else:
                         return None
         elif game_node.robot_direction == "DOWN":
                 if maze[game_node.robot_pos[0]][game_node.robot_pos[1] - 1] == 1:
                         new_robot_pos = (game_node.robot_pos[0], game_node.robot_pos[1] - 1)
                         new_robot_direction = "LEFT"
-                        if new_robot_pos == game_node.can_pos:
-                                new_can_pos = (game_node.can_pos[0], game_node.can_pos[1] - 1)
-                                if maze[new_can_pos[0]][new_can_pos[1]] == 0:
-                                        return None
-                        else:
-                                new_can_pos = game_node.can_pos
+                        if game_node.robot_pos == game_node.can_pos:
+                                return None
                 else:
                         return None
         elif game_node.robot_direction == "LEFT":
                 if maze[game_node.robot_pos[0] - 1][game_node.robot_pos[1]] == 1:
                         new_robot_pos = (game_node.robot_pos[0] - 1, game_node.robot_pos[1])
                         new_robot_direction = "UP"
-                        if new_robot_pos == game_node.can_pos:
-                                new_can_pos = (game_node.can_pos[0] - 1, game_node.can_pos[1])
-                                if maze[new_can_pos[0]][new_can_pos[1]] == 0:
-                                        return None
-                        else:
-                                new_can_pos = game_node.can_pos
+                        if game_node.robot_pos == game_node.can_pos:
+                                return None
                 else:
                         return None
         elif game_node.robot_direction == "RIGHT":
                 if maze[game_node.robot_pos[0] + 1][game_node.robot_pos[1]] == 1:
                         new_robot_pos = (game_node.robot_pos[0] + 1, game_node.robot_pos[1])
                         new_robot_direction = "DOWN"
-                        if new_robot_pos == game_node.can_pos:
-                                new_can_pos = (game_node.can_pos[0] + 1, game_node.can_pos[1])
-                                if maze[new_can_pos[0]][new_can_pos[1]] == 0:
-                                        return None
-                        else:
-                                new_can_pos = game_node.can_pos
+                        if game_node.robot_pos == game_node.can_pos:
+                                return None
                 else:
                         return None
-        new_node = Node(new_robot_pos, new_robot_direction, new_can_pos)
+        new_node = Node(new_robot_pos, new_robot_direction, game_node.can_pos)
         new_node.parent = game_node
         return new_node
 
@@ -290,9 +234,13 @@ def bfs():
     return None
 
 print("Start state:")
+import time
+start_time = time.time()
+
 print_maze(maze, root.robot_pos, root.can_pos, goal_pos)
 print()
 result = bfs()
+stop_time = time.time()
 if result == None:
         print("No solution found")
 else: 
@@ -345,5 +293,5 @@ else:
                                         moves.append("FORWARD")
                                 elif node.parent.robot_direction == "RIGHT":
                                         moves.append("BACKWARD")
-        moves.append("FORWARD")
         print(moves)
+        print("Time: ", stop_time - start_time)
