@@ -13,7 +13,7 @@ robot_pos = (1, 1) # (y, x)
 robot_direction = "RIGHT" # can be "UP", "DOWN", "LEFT", "RIGHT"
 
 can_pos = (3, 2) # can be multiple cans
-goal_pos = (4, 4) # can be multiple goals
+goal_pos = (1, 1) # can be multiple goals
 
 def print_maze(maze, robot_pos, can_pos, goal_pos): # print game state, for testing
         for y in range(len(maze)):
@@ -30,11 +30,6 @@ def print_maze(maze, robot_pos, can_pos, goal_pos): # print game state, for test
                                 print(" ", end=" ")
                 print()
 
-#print_maze(maze, robot_pos, can_pos, goal_pos)
-
-#the only change in game state is the robot position, direction and can position
-#the goal position is fixed
-
 class Node:
     def __init__(self, robot_pos, robot_direction, can_pos):
         self.robot_pos = robot_pos
@@ -42,16 +37,14 @@ class Node:
         self.can_pos = can_pos
         self.parent = None
 
-#make start node
 root = Node(robot_pos, robot_direction, can_pos)
 
 #SEARCH LISTS
 states_openlist = [root] #starts with initial state
-states_closedlist = [] #starts empty and contains visited states
+states_closedlist = set() #starts empty and contains visited states
 
 #ACTIONS (game state)
 def move_forward(maze, game_node): 
-        #check if there is a wall in front of the robot
         if game_node.robot_direction == "UP":
                 if maze[game_node.robot_pos[0] - 1][game_node.robot_pos[1]] == 1:
                         new_robot_pos = (game_node.robot_pos[0] - 1, game_node.robot_pos[1])
@@ -97,7 +90,6 @@ def move_forward(maze, game_node):
         return new_node
 
 def move_backward(maze, game_node): 
-        #check if there is a wall behind the robot
         if game_node.robot_direction == "UP":
                 if maze[game_node.robot_pos[0] + 1][game_node.robot_pos[1]] == 1:
                         new_robot_pos = (game_node.robot_pos[0] + 1, game_node.robot_pos[1])
@@ -135,7 +127,6 @@ def move_backward(maze, game_node):
         return new_node
     
 def move_left(maze, game_node): 
-        #check if there is a wall to the left of the robot
         if game_node.robot_direction == "UP":
                 if maze[game_node.robot_pos[0]][game_node.robot_pos[1] - 1] == 1:
                         new_robot_pos = (game_node.robot_pos[0], game_node.robot_pos[1] - 1)
@@ -173,7 +164,6 @@ def move_left(maze, game_node):
         return new_node
     
 def move_right(maze, game_node): 
-        #check if there is a wall to the right of the robot
         if game_node.robot_direction == "UP":
                 if maze[game_node.robot_pos[0]][game_node.robot_pos[1] + 1] == 1:
                         new_robot_pos = (game_node.robot_pos[0], game_node.robot_pos[1] + 1)
@@ -210,21 +200,20 @@ def move_right(maze, game_node):
         new_node.parent = game_node
         return new_node
 
-
-#BFS on game states
 def bfs():
     while len(states_openlist) > 0:
         current_node = states_openlist.pop(0)
-        states_closedlist.append(current_node)
+        states_closedlist.add(current_node)
         if current_node.can_pos == goal_pos:
             return current_node
         else:
             new_node = move_forward(maze, current_node)
             if new_node != None and new_node not in states_openlist and new_node not in states_closedlist:
                 states_openlist.append(new_node)
-            new_node = move_backward(maze, current_node)
-            if new_node != None and new_node not in states_openlist and new_node not in states_closedlist:
-                states_openlist.append(new_node)
+            if current_node.robot_pos == current_node.can_pos:  #given only one can
+                new_node = move_backward(maze, current_node)
+                if new_node != None and new_node not in states_openlist and new_node not in states_closedlist:
+                        states_openlist.append(new_node)
             new_node = move_left(maze, current_node)
             if new_node != None and new_node not in states_openlist and new_node not in states_closedlist:
                 states_openlist.append(new_node)
